@@ -38,10 +38,12 @@ jobs:
       - name: Build executable
         run: |
           echo "Using version: ${{ steps.read_config.outputs.version }}"
-          pyinstaller --onefile \
-            --windowed --clean \
-            --name "${{ env.OUTPUT_FILE_PREFIX }}.${{ steps.read_config.outputs.version }}" main.py
-
+          $version = "${{ steps.read_config.outputs.version }}"
+          pyinstaller --onefile `
+                      --windowed `
+                      --clean `
+                      --name "${{ env.OUTPUT_FILE_PREFIX }}.$version" `
+                      main.py
       - name: Create zip archive
         run: |
           $zipFileName = "${{ env.OUTPUT_FILE_PREFIX }}.${{ steps.read_config.outputs.version }}.zip"
