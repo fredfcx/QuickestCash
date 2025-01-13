@@ -30,10 +30,18 @@ jobs:
           pip-sync requirements.txt
 
       - name: Read config file
-        id: read_config
+        id: read_config_1
         run: |
           $version = (python -c "import configparser;config = configparser.ConfigParser();config.read('config.ini');print(config.get('DEFAULT', 'version'))")
           echo "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Read introduce from config.ini
+        id: read_config
+        run: |
+          import configparser
+          config = configparser.ConfigParser()
+          config.read('config.ini')
+          introduce = config['release']['introduce']
 
       - name: Build executable
         run: |
@@ -64,6 +72,7 @@ jobs:
           release_name: Release ${{ steps.read_config.outputs.version }}
           draft: false
           prerelease: false
+          body: ${{ steps.read_config.outputs.introduce }}
 
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
