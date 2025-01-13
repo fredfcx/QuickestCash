@@ -29,9 +29,6 @@ jobs:
           pip install pip-tools
           pip-sync requirements.txt
 
-      - name: Update configuration file
-        run: python prebuild_scripts/version.py
-
       - name: Read config file
         id: read_config
         run: |
@@ -42,11 +39,6 @@ jobs:
         run: |
           echo "Using version: ${{ steps.read_config.outputs.version }}"
           pyinstaller --onefile \
-            --add-data "resources;resources" \
-            --add-data "config.ini;." \
-            --add-data "members.csv;versions" \
-            --add-data "goodsdata.csv;versions" \
-            --icon="resources/csv_filter.ico" \
             --windowed --clean \
             --name "${{ env.OUTPUT_FILE_PREFIX }}.${{ steps.read_config.outputs.version }}" main.py
 
