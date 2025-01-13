@@ -32,7 +32,7 @@ jobs:
       - name: Read config file
         id: read_config_1
         run: |
-          $version = (python -c "import configparser;config = configparser.ConfigParser();config.read('config.ini');print(config.get('DEFAULT', 'version'))")
+          $version = (python -c "import configparser;config = configparser.ConfigParser();config.read('config.ini', encoding='utf-8');print(config.get('DEFAULT', 'version'))")
           echo "version=$version" >> $env:GITHUB_OUTPUT
 
       - name: Read introduce from config.ini
@@ -40,7 +40,7 @@ jobs:
         run: |
           import configparser
           config = configparser.ConfigParser()
-          config.read('config.ini')
+          config.read('config.ini', encoding='utf-8')
           introduce = config['release']['introduce']
 
       - name: Build executable
